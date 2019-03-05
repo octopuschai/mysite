@@ -10,7 +10,7 @@ class Question(models.Model):
 
     def was_published_recently(self):
         '''判断问题是否是最近24小时内发布的'''
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+        return timezone.now() >= self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
     def __str__(self):
         return self.question_text
