@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
+from django.utils import timezone
 
 from .models import Question, Choice
 
@@ -12,12 +13,19 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         '''获得最近的5个投票问题'''
-        return Question.objects.order_by('-pub_date')[:5]
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
 
 class DetailView(generic.DetailView):
     '''显示投票问题详细页'''
     model = Question
     template_name = 'polls/detail.html'
+
+    def get_queryset(self):
+        '''
+        排除将来发布的投票问题
+        :return:
+        '''
+        return Question.objects.filter(pub_date__lte=timezone.now())
 
 class ResultsView(generic.DetailView):
     '''显示投票问题详细页'''
