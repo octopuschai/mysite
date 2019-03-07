@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>polls</title>
 </head>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
 <body>
 <h1>投票问题：</h1>
 {% if latest_question_list %}
